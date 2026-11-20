@@ -1,12 +1,5 @@
-# Azure Zero-Trust Hub-and-Spoke Landing Zone
+# Azure Zero-Trust Hub-and-Spoke Landing Zone (Terraform)
 
-<<<<<<< HEAD
-Modular Terraform project that deploys a Hub-and-Spoke network on Microsoft Azure with bidirectional VNet peering, Azure Firewall, a private Azure Key Vault (Private Endpoint + Private DNS zone + public network access disabled), and an Azure Policy assignment denying public IPs on network interfaces.
-
----
-
-## Architecture
-=======
 ![Azure](https://img.shields.io/badge/Cloud-Microsoft%20Azure-0078D4?logo=microsoftazure&logoColor=white)
 ![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC?logo=terraform&logoColor=white)
 ![Security](https://img.shields.io/badge/Security-Zero--Trust%20%7C%20Policy--as--Code-0A66C2)
@@ -16,7 +9,6 @@ Modular Terraform implementation of an **Azure Zero-Trust Hub-and-Spoke Landing 
 ---
 
 ## Architecture Overview
->>>>>>> ceb97b0 (Add end-to-end project README and verification screenshots)
 
 ```text
                          [Azure Subscription]
@@ -32,8 +24,6 @@ Modular Terraform implementation of an **Azure Zero-Trust Hub-and-Spoke Landing 
          │                                           └── Private Endpoint -> Key Vault
          └───────────► Bidirectional Peering ◄───────┘
                       + Private DNS Zone (privatelink.vaultcore.azure.net)
-<<<<<<< HEAD
-=======
 ```
 
 ---
@@ -72,6 +62,7 @@ azure-zero-trust-landing-zone/
 ## Step-by-Step Deployment & Verification Guide
 
 ### Step 1: Prerequisites & Azure Authentication
+
 1. Ensure **Azure CLI** (`az`) and **Terraform** (`>= 1.9.0`) are installed.
 2. Sign in to Azure, select your target subscription, and register required resource providers:
 
@@ -88,6 +79,7 @@ az provider register --namespace Microsoft.Compute
 ```
 
 ### Step 2: Bootstrap Remote Terraform State Storage
+
 Run once to create a private storage account and `tfstate` container:
 
 ```bash
@@ -116,6 +108,7 @@ echo "Storage Account Name: $TF_SA"
 Copy the generated storage account name into `envs/dev/providers.tf` under `storage_account_name`.
 
 ### Step 3: Initialize, Validate, and Apply Terraform
+
 Navigate to `envs/dev` and deploy the landing zone:
 
 ```bash
@@ -128,6 +121,7 @@ terraform apply tfplan
 ```
 
 ### Step 4: Verify Zero-Trust & Policy Controls
+
 Confirm Key Vault disables public internet access and Azure Policy blocks a NIC configured with a public IP:
 
 ```bash
@@ -151,7 +145,9 @@ az network public-ip delete --resource-group "$RG_NAME" --name pip-policy-test
 ```
 
 ### Step 5: Capture Verification Screenshots & Push to GitHub
-Save screenshots inside `docs/screenshots/`:
+
+Save redacted screenshots inside `docs/screenshots/`:
+
 * `docs/screenshots/01-vnets-peerings.png` — Hub and Spoke VNets showing `Connected` peering status
 * `docs/screenshots/02-keyvault-private-endpoint.png` — Key Vault networking showing public access disabled and the Private Endpoint connection
 * `docs/screenshots/03-private-dns-zone.png` — `privatelink.vaultcore.azure.net` Private DNS zone and Spoke VNet link
@@ -167,10 +163,25 @@ git push -u origin main
 ```
 
 ### Step 6: Teardown Resources (Cost & Credit Hygiene)
+
 Destroy billable resources (such as Azure Firewall) as soon as verification and screenshot capture are finished:
 
 ```bash
 cd envs/dev
 terraform destroy
 ```
->>>>>>> ceb97b0 (Add end-to-end project README and verification screenshots)
+
+---
+
+## Verification & Screenshots
+
+Once captured and saved under `docs/screenshots/`, embed your screenshots below:
+
+* **Hub & Spoke VNets and Peerings:**
+  `![Hub and Spoke VNets](docs/screenshots/01-vnets-peerings.png)`
+* **Key Vault Networking & Private Endpoint:**
+  `![Key Vault Private Endpoint](docs/screenshots/02-keyvault-private-endpoint.png)`
+* **Private DNS Zone (`privatelink.vaultcore.azure.net`):**
+  `![Private DNS Zone](docs/screenshots/03-private-dns-zone.png)`
+* **Azure Policy Denial Output:**
+  `![Policy Denial](docs/screenshots/04-policy-denial.png)`
