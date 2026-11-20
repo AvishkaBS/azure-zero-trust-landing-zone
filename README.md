@@ -144,9 +144,7 @@ az network nic create \
 az network public-ip delete --resource-group "$RG_NAME" --name pip-policy-test
 ```
 
-### Step 5: Teardown Resources (Cost & Credit Hygiene)
-
-Destroy billable resources (such as Azure Firewall) as soon as verification and screenshot capture are finished:
+### Step 5: Teardown Resources
 
 ```bash
 cd envs/dev
