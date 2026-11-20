@@ -1,12 +1,22 @@
-# Azure Zero-Trust Hub-and-Spoke Landing Zone (Terraform)
+# Azure Zero-Trust Hub-and-Spoke Landing Zone
 
-Modular Terraform configuration for an Azure Hub-and-Spoke landing zone with VNet peering, Azure Firewall, a Private Endpoint + Private DNS zone for Azure Key Vault (with public network access disabled), and an Azure Policy assignment denying public IPs on network interfaces.
+Modular Terraform project that deploys a Hub-and-Spoke network on Microsoft Azure with bidirectional VNet peering, Azure Firewall, a private Azure Key Vault (Private Endpoint + Private DNS zone + public network access disabled), and an Azure Policy assignment denying public IPs on network interfaces.
 
-## Repository Structure
-- `modules/network`: Hub/Spoke VNets, subnets, NSG, peering, Private DNS zone & link
-- `modules/security`: Azure Firewall, Key Vault (public access disabled), Private Endpoint
-- `modules/policy`: Azure Policy assignment denying public IPs on NICs
-- `envs/dev`: Dev environment wiring modules, remote backend, and outputs
+---
 
-## Usage & Teardown
-Run `terraform init`, `terraform validate`, `terraform plan -out=tfplan`, and `terraform apply tfplan` from `envs/dev`. Run `terraform destroy` when finished testing so credits aren't wasted before December 10, 2026.
+## Architecture
+
+```text
+                         [Azure Subscription]
+         ├── Azure Policy: Deny Public IPs on NICs (deny-nic-public-ip)
+         └── RBAC / Least-Privilege Governance
+                                 │
+         ┌───────────────────────┴───────────────────────┐
+         ▼                                               ▼
+[Hub VNet: 10.10.0.0/16]                       [Spoke VNet: 10.20.0.0/16]
+ ├── AzureFirewallSubnet (10.10.1.0/26)         ├── snet-workload (10.20.1.0/24)
+ ├── AzureBastionSubnet (10.10.2.0/26)          │    └── NSG Attached (nsg-spoke-workload)
+ └── snet-hub-mgmt (10.10.3.0/24)              └── snet-privatelink (10.20.2.0/24)
+         │                                           └── Private Endpoint -> Key Vault
+         └───────────► Bidirectional Peering ◄───────┘
+                      + Private DNS Zone (privatelink.vaultcore.azure.net)
