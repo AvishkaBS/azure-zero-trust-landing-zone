@@ -144,25 +144,7 @@ az network nic create \
 az network public-ip delete --resource-group "$RG_NAME" --name pip-policy-test
 ```
 
-### Step 5: Capture Verification Screenshots & Push to GitHub
-
-Save redacted screenshots inside `docs/screenshots/`:
-
-* `docs/screenshots/01-vnets-peerings.png` — Hub and Spoke VNets showing `Connected` peering status
-* `docs/screenshots/02-keyvault-private-endpoint.png` — Key Vault networking showing public access disabled and the Private Endpoint connection
-* `docs/screenshots/03-private-dns-zone.png` — `privatelink.vaultcore.azure.net` Private DNS zone and Spoke VNet link
-* `docs/screenshots/04-policy-denial.png` — Terminal output showing Azure Policy denying the public-IP NIC
-
-Stage, commit, and push your documentation and screenshots to GitHub:
-
-```bash
-mkdir -p docs/screenshots
-git add README.md docs/screenshots/
-git commit -m "Add end-to-end project README and verification screenshots"
-git push -u origin main
-```
-
-### Step 6: Teardown Resources (Cost & Credit Hygiene)
+### Step 5: Teardown Resources (Cost & Credit Hygiene)
 
 Destroy billable resources (such as Azure Firewall) as soon as verification and screenshot capture are finished:
 
@@ -172,16 +154,3 @@ terraform destroy
 ```
 
 ---
-
-## Verification & Screenshots
-
-Once captured and saved under `docs/screenshots/`, embed your screenshots below:
-
-* **Hub & Spoke VNets and Peerings:**
-  `![Hub and Spoke VNets](docs/screenshots/01-vnets-peerings.png)`
-* **Key Vault Networking & Private Endpoint:**
-  `![Key Vault Private Endpoint](docs/screenshots/02-keyvault-private-endpoint.png)`
-* **Private DNS Zone (`privatelink.vaultcore.azure.net`):**
-  `![Private DNS Zone](docs/screenshots/03-private-dns-zone.png)`
-* **Azure Policy Denial Output:**
-  `![Policy Denial](docs/screenshots/04-policy-denial.png)`
