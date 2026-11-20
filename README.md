@@ -1,12 +1,11 @@
 # Azure Zero-Trust Hub-and-Spoke Landing Zone
 
-<<<<<<< HEAD
 Modular Terraform project that deploys a Hub-and-Spoke network on Microsoft Azure with bidirectional VNet peering, Azure Firewall, a private Azure Key Vault (Private Endpoint + Private DNS zone + public network access disabled), and an Azure Policy assignment denying public IPs on network interfaces.
 
 ---
 
 ## Architecture
-=======
+
 ![Azure](https://img.shields.io/badge/Cloud-Microsoft%20Azure-0078D4?logo=microsoftazure&logoColor=white)
 ![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC?logo=terraform&logoColor=white)
 ![Security](https://img.shields.io/badge/Security-Zero--Trust%20%7C%20Policy--as--Code-0A66C2)
@@ -16,9 +15,7 @@ Modular Terraform implementation of an **Azure Zero-Trust Hub-and-Spoke Landing 
 ---
 
 ## Architecture Overview
->>>>>>> ceb97b0 (Add end-to-end project README and verification screenshots)
 
-```text
                          [Azure Subscription]
          ├── Azure Policy: Deny Public IPs on NICs (deny-nic-public-ip)
          └── RBAC / Least-Privilege Governance
@@ -32,8 +29,6 @@ Modular Terraform implementation of an **Azure Zero-Trust Hub-and-Spoke Landing 
          │                                           └── Private Endpoint -> Key Vault
          └───────────► Bidirectional Peering ◄───────┘
                       + Private DNS Zone (privatelink.vaultcore.azure.net)
-<<<<<<< HEAD
-=======
 ```
 
 ---
